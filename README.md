@@ -67,8 +67,8 @@ Click Image->Register Image. Refer to the image below
 
 ![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_image.png)
 
+To launch an instance click the image created in the above step and click on Launch Instance. Refer to the image below
 
-To launch an instance click the image created in the above step and click on Launch Instnce. Refer to the image below
 ![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_launch_instance.png)
 
 ##Contributing
