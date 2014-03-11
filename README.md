@@ -71,6 +71,11 @@ To launch an instance click the image created in the above step and click on Lau
 
 ![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_launch_instance.png)
 
+Google compute engine does not allow us to stop the instance (delete instance is allowed), so restart operation does not do anything. Refer to the image below
+
+![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_restart.png)
+
+
 ##Contributing
 
 Always feel free to fork and contribute any changes directly here on GitHub.
