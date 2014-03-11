@@ -39,6 +39,16 @@ Lastly, the gce-connector-extension may be used to stage migration of an applica
 </tbody>
 </table>
 
+##Prerequisite
+Create a service account for your GCE project and download the privatekey file (.p12 file). To do this:
+
+1. Log into the Google Cloud Console
+2. Click on the project you want to use the GCE monitoring extension with (or create one if you don't have one yet).
+3. Click "APIs & auth" in the left sidebar
+4. Click "Credentials" in the left sidebar
+5. Click "Create New Client ID" and choose "Service Account"
+A private key file (.p12 file) will be downloaded for you. Note the password for the private key! This private key is your client private key.
+
 ##Installation
 
 1. Clone the gce-connector-extension from GitHub
@@ -51,11 +61,15 @@ Lastly, the gce-connector-extension may be used to stage migration of an applica
 
 Click Compute Cloud->Register Compute Cloud. Refer to the image below
 
-![alt tag]()
+![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_compute_cloud.png)
 
 Click Image->Register Image. Refer to the image below
 
-![alt tag]()
+![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_image.png)
+
+
+To launch an instance click the image created in the above step and click on Launch Instnce. Refer to the image below
+![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_launch_instance.png)
 
 ##Contributing
 
