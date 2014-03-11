@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compute-center-types>
+    <compute-center-type>
+        <name>Google Compute Engine</name>
+        <description>Google Compute Engine</description>
+        <connector-impl-class-name>
+            com.singularity.ee.connectors.gce.GCEConnector
+        </connector-impl-class-name>
+        <property-definitions>
+            <property-definition>
+                <name>Service Account ID</name>
+                <description>Service Account ID</description>
+                <required>true</required>
+                <type>STRING</type>
+                <default-string-value></default-string-value>
+                <string-max-length>90</string-max-length>
+                <allowed-string-values></allowed-string-values>
+                <default-file-value></default-file-value>
+            </property-definition>
+            <property-definition>
+                <name>Service Account P12 File Path</name>
+                <description>Service Account P12 File Path</description>
+                <required>true</required>
+                <type>STRING</type>
+                <default-string-value></default-string-value>
+                <string-max-length>150</string-max-length>
+                <allowed-string-values></allowed-string-values>
+                <default-file-value></default-file-value>
+            </property-definition>
+            <property-definition>
+                <name>Project ID</name>
+                <description>Project ID</description>
+                <required>true</required>
+                <type>STRING</type>
+                <default-string-value></default-string-value>
+                <string-max-length>90</string-max-length>
+                <allowed-string-values></allowed-string-values>
+                <default-file-value></default-file-value>
+            </property-definition>
+        </property-definitions>
+        <machine-descriptor-definitions>
+            <property-definition>
+                <name>Name</name>
+                <description>Name</description>
+                <required>true</required>
+                <type>STRING</type>
+                <default-string-value></default-string-value>
+                <string-max-length>80</string-max-length>
+                <allowed-string-values></allowed-string-values>
+                <default-file-value></default-file-value>
+            </property-definition>
+            <property-definition>
+                <name>Zone</name>
+                <description>Zone</description>
+                <required>true</required>
+                <type>STRING</type>
+                <default-string-value></default-string-value>
+                <string-max-length>80</string-max-length>
+                <allowed-string-values>us-central1-a,us-central1-b,europe-west1-a,europe-west1-b</allowed-string-values>
+                <default-file-value></default-file-value>
+            </property-definition>
+
+        </machine-descriptor-definitions>
+    </compute-center-type>
+</compute-center-types>
