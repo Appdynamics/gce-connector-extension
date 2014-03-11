@@ -44,15 +44,6 @@ public class GCEConnector implements IConnector {
 
     private IControllerServices controllerServices;
 
-    //private static final String API_VERSION = "v1";
-    //private static final String GOOGLE_PROJECT = "google";
-    //private static final String DEFAULT_PROJECT = "<project-id>";
-
-    //private static final String BASE_URL = "https://www.googleapis.com/compute/" + API_VERSION + "/projects/";
-    //private static final String DEFAULT_IMAGE = BASE_URL + GOOGLE_PROJECT + "/global/images/gcel-12-04-v20130104";
-    //private static final String DEFAULT_MACHINE_TYPE = BASE_URL + DEFAULT_PROJECT + "/global/machineTypes/n1-standard-1";
-    //private static final String DEFAULT_NETWORK = BASE_URL + DEFAULT_PROJECT + "/global/networks/default";
-
     private static final Map<String, String> IMAGE_URL;
 
     static {
@@ -278,7 +269,6 @@ public class GCEConnector implements IConnector {
             //Delete boot disk
             Compute.Disks.Delete deleteDisk = connector.disks().delete(projectId, zone, iMachine.getName());
             deleteDisk.execute();
-
         } catch (IOException e) {
             LOG.error("Unable to terminate the instance", e);
             throw new ConnectorException("Unable to terminate the instance", e);
@@ -288,7 +278,7 @@ public class GCEConnector implements IConnector {
 
     @Override
     public void restartMachine(IMachine iMachine) throws InvalidObjectException, ConnectorException {
-
+        //Stopping is not supported by GCE, Only terminate/delete is supported.
     }
 
     @Override
