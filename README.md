@@ -1,4 +1,4 @@
-Google Computing Engine Connector Extension
+Google Compute Engine Connector Extension
 ===========================================
 
 ##Use Case
