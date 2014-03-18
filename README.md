@@ -1,4 +1,4 @@
-Google Computing Engine Connector Extension
+Google Compute Engine Connector Extension
 ===========================================
 
 ##Use Case
@@ -70,6 +70,11 @@ Click Image->Register Image. Refer to the image below
 To launch an instance click the image created in the above step and click on Launch Instance. Refer to the image below
 
 ![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_launch_instance.png)
+
+Google compute engine does not allow us to stop the instance (delete instance is allowed), so restart operation does not do anything. Refer to the image below
+
+![alt tag](https://github.com/Appdynamics/gce-connector-extension/raw/master/gce_restart.png)
+
 
 ##Contributing
 
