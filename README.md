@@ -21,20 +21,16 @@ Lastly, the gce-connector-extension may be used to stage migration of an applica
 <th align="left"> Description </th>
 </tr>
 <tr>
-<td class='confluenceTd'> lib </td>
-<td class='confluenceTd'> Contains third-party project references </td>
-</tr>
-<tr>
 <td class='confluenceTd'> src </td>
 <td class='confluenceTd'> Contains source code to the gce connector extension </td>
 </tr>
 <tr>
-<td class='confluenceTd'> dist </td>
-<td class='confluenceTd'> Only obtained when using ant. Run 'ant build' to get binaries. Run 'ant package' to get the distributable .zip file </td>
+<td class='confluenceTd'> target </td>
+<td class='confluenceTd'> Only obtained when using maven. Run 'maven clean install' to get distributable .zip file </td>
 </tr>
 <tr>
-<td class='confluenceTd'> build.xml </td>
-<td class='confluenceTd'> Ant build script to package the project (required only if changing Java code) </td>
+<td class='confluenceTd'> pom.xml </td>
+<td class='confluenceTd'> maven script file (required only if changing Java code) </td>
 </tr>
 </tbody>
 </table>
@@ -52,7 +48,7 @@ A private key file (.p12 file) will be downloaded for you. Note the password for
 ##Installation
 
 1. Clone the gce-connector-extension from GitHub
-2. Run 'ant package' from the cloned gce-connector-extension directory
+2. Run 'maven clean install' from the cloned gce-connector-extension directory
 3. Download the file gce-connector.zip located in the 'dist' directory into \<controller install dir\>/lib/connectors
 4. Unzip the downloaded file
 5. Restart the Controller
