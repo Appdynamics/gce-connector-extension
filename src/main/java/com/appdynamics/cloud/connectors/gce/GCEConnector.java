@@ -1,5 +1,7 @@
 package com.appdynamics.cloud.connectors.gce;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.compute.Compute;
 import com.google.api.services.compute.model.AccessConfig;
 import com.google.api.services.compute.model.AttachedDisk;
@@ -246,7 +248,16 @@ public class GCEConnector implements IConnector {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //If the machine instance is not found, set the state as STOPPED
+            if(e instanceof GoogleJsonResponseException) {
+                GoogleJsonResponseException googleJsonResponseException = (GoogleJsonResponseException) e;
+                List<GoogleJsonError.ErrorInfo> errors = googleJsonResponseException.getDetails().getErrors();
+                if("notFound".equals(errors.get(0).getReason())) {
+                    iMachine.setState(MachineState.STOPPED); 
+                }
+            }
+            
+            LOG.log(Level.WARNING, "Error in refresh instance", e);
         }
 
     }
