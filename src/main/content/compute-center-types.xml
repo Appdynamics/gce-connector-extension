@@ -4,7 +4,7 @@
         <name>Google Compute Engine</name>
         <description>Google Compute Engine</description>
         <connector-impl-class-name>
-            com.singularity.ee.connectors.gce.GCEConnector
+            com.appdynamics.cloud.connectors.gce.GCEConnector
         </connector-impl-class-name>
         <property-definitions>
             <property-definition>

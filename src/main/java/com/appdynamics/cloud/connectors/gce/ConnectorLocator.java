@@ -1,4 +1,4 @@
-package com.singularity.ee.connectors.gce;
+package com.appdynamics.cloud.connectors.gce;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectorLocator {
 
@@ -29,7 +30,7 @@ public class ConnectorLocator {
 
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
-    private static final Logger LOG = Logger.getLogger(ConnectorLocator.class);
+    private static final Logger LOG = Logger.getLogger(ConnectorLocator.class.getName());
 
     /**
      * Private constructor on singleton.
@@ -63,7 +64,7 @@ public class ConnectorLocator {
         try {
             compute.projects().get(projectId).execute();
         } catch (Exception e) {
-            LOG.error("The specified " + Utils.SERVICE_ACCOUNT_KEY_PROP +
+            LOG.log(Level.WARNING, "The specified " + Utils.SERVICE_ACCOUNT_KEY_PROP +
                     " and/or " + Utils.SERVICE_ACCOUNT_P12_FILE_KEY_PROP + " is not valid.", e);
 
             throw new InvalidObjectException("The specified " + Utils.SERVICE_ACCOUNT_KEY_PROP +
@@ -109,10 +110,10 @@ public class ConnectorLocator {
                     .setServiceAccountPrivateKeyFromP12File(new File(serviceAccountP12FilePath))
                     .build();
         } catch (GeneralSecurityException e) {
-            LOG.error(e.getMessage(), e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
             throw new RuntimeException(e.getMessage(), e);
         } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
             throw new RuntimeException(e.getMessage(), e);
         }
 

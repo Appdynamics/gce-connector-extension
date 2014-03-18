@@ -1,4 +1,4 @@
-package com.singularity.ee.connectors.gce;
+package com.appdynamics.cloud.connectors.gce;
 
 import com.google.api.services.compute.Compute;
 import com.google.api.services.compute.model.AccessConfig;
@@ -31,7 +31,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.singularity.ee.controller.KAppServerConstants.CONTROLLER_SERVICES_HOST_NAME_PROPERTY_KEY;
 import static com.singularity.ee.controller.KAppServerConstants.CONTROLLER_SERVICES_PORT_PROPERTY_KEY;
@@ -39,7 +40,7 @@ import static com.singularity.ee.controller.KAppServerConstants.DEFAULT_CONTROLL
 
 public class GCEConnector implements IConnector {
 
-    private static final Logger LOG = Logger.getLogger(GCEConnector.class);
+    private static final Logger LOG = Logger.getLogger(GCEConnector.class.getName());
 
 
     private IControllerServices controllerServices;
@@ -83,11 +84,11 @@ public class GCEConnector implements IConnector {
         Operation insertDiskExecute = createBootDisk(connector, instanceName, projectId, zone, image);
 
         CountDownLatch doneSignal = new CountDownLatch(1);
-        waitForDiskToCreate(connector, projectId, zone, insertDiskExecute, doneSignal);
+        waitForOperationToComplete(connector, projectId, zone, insertDiskExecute, doneSignal);
         try {
             doneSignal.await();
         } catch (InterruptedException e) {
-            LOG.error("Waiting for disk creation interrupted", e);
+            LOG.log(Level.WARNING, "Waiting for disk creation interrupted", e);
         }
 
         Instance instance = populateInstance(projectId, zone, instanceName, machineType);
@@ -102,7 +103,7 @@ public class GCEConnector implements IConnector {
                     agentResolutionEncoder.getUniqueHostIdentifier(), iComputeCenter, iMachineDescriptor, iImage,
                     getAgentPort());
         } catch (IOException e) {
-            LOG.error("Unable to create instance", e);
+            LOG.log(Level.WARNING, "Unable to create instance", e);
             throw new ConnectorException("Unable to create instance", e);
         } finally {
             if (!instanceCreated) {
@@ -113,7 +114,7 @@ public class GCEConnector implements IConnector {
                     String message = "Machine create failed and unable to delete the boot disk! " +
                             "We have a boot disk with name " + instanceName + " which is not used by any instance." +
                             " Please remove the boot disk manually.";
-                    LOG.error(message, e);
+                    LOG.log(Level.WARNING, message, e);
                     throw new ConnectorException(message, e);
                 }
             }
@@ -128,7 +129,7 @@ public class GCEConnector implements IConnector {
             controllerHost = System.getProperty(CONTROLLER_SERVICES_HOST_NAME_PROPERTY_KEY, InetAddress
                     .getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {
-            LOG.error(e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
             throw new ConnectorException(e);
         }
 
@@ -167,7 +168,7 @@ public class GCEConnector implements IConnector {
         return instance;
     }
 
-    private void waitForDiskToCreate(final Compute connector, final String projectId, final String zone, Operation insertDiskExecute, final CountDownLatch doneSignal) {
+    private void waitForOperationToComplete(final Compute connector, final String projectId, final String zone, Operation insertDiskExecute, final CountDownLatch doneSignal) {
         final String operationName = insertDiskExecute.getName();
         final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(new Runnable() {
@@ -181,7 +182,7 @@ public class GCEConnector implements IConnector {
                         executorService.shutdown();
                     }
                 } catch (IOException e) {
-                    LOG.error("Unable to get the boot disk creation status", e);
+                    LOG.log(Level.WARNING, "Unable to get the operation status", e);
                 }
             }
         }, 0, 5, TimeUnit.SECONDS);
@@ -198,7 +199,7 @@ public class GCEConnector implements IConnector {
             insertDisk.setSourceImage(IMAGE_URL.get(image));
             return insertDisk.execute();
         } catch (IOException e) {
-            LOG.error("Unable to create boot disk", e);
+            LOG.log(Level.WARNING, "Unable to create boot disk", e);
             throw new ConnectorException("Unable to create boot disk", e);
         }
     }
@@ -263,14 +264,22 @@ public class GCEConnector implements IConnector {
         try {
             //Delete instance
             Compute.Instances.Delete deleteInstance = connector.instances().delete(projectId, zone, iMachine.getName());
-            deleteInstance.execute();
+            Operation deleteOperation = deleteInstance.execute();
             iMachine.setState(MachineState.STOPPED);
+
+            CountDownLatch doneSignal = new CountDownLatch(1);
+            waitForOperationToComplete(connector, projectId, zone, deleteOperation, doneSignal);
+            try {
+                doneSignal.await();
+            } catch (InterruptedException e) {
+                LOG.log(Level.WARNING, "Waiting for instance deletion interrupted", e);
+            }
 
             //Delete boot disk
             Compute.Disks.Delete deleteDisk = connector.disks().delete(projectId, zone, iMachine.getName());
             deleteDisk.execute();
         } catch (IOException e) {
-            LOG.error("Unable to terminate the instance", e);
+            LOG.log(Level.WARNING, "Unable to terminate the instance", e);
             throw new ConnectorException("Unable to terminate the instance", e);
 
         }

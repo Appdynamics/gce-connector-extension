@@ -1,4 +1,4 @@
-package com.singularity.ee.connectors.gce;
+package com.appdynamics.cloud.connectors.gce;
 
 import com.singularity.ee.connectors.api.IControllerServices;
 import com.singularity.ee.connectors.entity.api.IProperty;
