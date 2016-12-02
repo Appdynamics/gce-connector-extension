@@ -138,7 +138,7 @@ public class GCEConnector implements IConnector {
         int controllerPort = Integer.getInteger(CONTROLLER_SERVICES_PORT_PROPERTY_KEY, DEFAULT_CONTROLLER_PORT_VALUE);
 
         return new AgentResolutionEncoder(controllerHost, controllerPort,
-                account.getName(), account.getAccessKey());
+                account.getName(), "");
     }
 
     private Instance populateInstance(String projectId, String zone, String instanceName, String machineType) {
