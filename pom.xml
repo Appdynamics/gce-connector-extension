@@ -140,7 +140,7 @@
                                 <copy todir="${target.dir}">
                                     <fileset dir="${build.directory}" includes="connector.${project.packaging}"/>
                                 </copy>
-                                <zip destfile="${target.dir}.zip">
+                                <zip destfile="${target.dir}-${project.version}.zip">
                                     <zipfileset dir="${target.dir}" filemode="755" prefix="gce/"/>
                                 </zip>
                                 <delete dir="${target.dir}"/>
